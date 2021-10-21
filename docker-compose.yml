@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  teslamatetelegrambot:
+    image: teslamatetelegrambot:latest
+    restart: unless-stopped
+    environment:
+      - MQTT_BROKER_HOST=YOUR_TESLAMATE_IP_ADDRESS
+      - MQTT_BROKER_PORT=1883
+      - TELEGRAM_BOT_API_KEY=YOUR_BOT_API_KEY
+      - TELEGRAM_BOT_CHAT_ID=YOUR_CHAT_ID
+    ports:
+      - 1883
+    build:
+      context: .
+      dockerfile: Dockerfile
