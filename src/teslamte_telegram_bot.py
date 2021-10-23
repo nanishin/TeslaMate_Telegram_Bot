@@ -39,12 +39,47 @@ def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload.decode()))
     title = msg.topic
     value = str(msg.payload.decode())
-    if msg.topic == "teslamate/cars/1/state":
+    # Check Teslamate MQTT Topics based on https://docs.teslamate.org/docs/integrations/mqtt
+    if msg.topic == "teslamate/cars/1/display_name":
+        title = "<b>Display Name</b> : "
+    elif msg.topic == "teslamate/cars/1/state":
         title = "<b>State</b> : "
+    elif msg.topic == "teslamate/cars/1/since":
+        title = "<b>Since</b> : "
+    elif msg.topic == "teslamate/cars/1/healthy":
+        title = "<b>Healthy</b> : "
+    elif msg.topic == "teslamate/cars/1/version":
+        title = "<b>Version</b> : "
     elif msg.topic == "teslamate/cars/1/update_available":
         title = "<b>State</b> : "
     elif msg.topic == "teslamate/cars/1/update_version":
         title = "<b>Update Version</b> : "
+    elif msg.topic == "teslamate/cars/1/model":
+        title = "<b>Model</b> : "
+    elif msg.topic == "teslamate/cars/1/trim_badging":
+        title = "<b>Trim Badging</b> : "
+    elif msg.topic == "teslamate/cars/1/exterior_color":
+        title = "<b>Exterior Color</b> : "
+    elif msg.topic == "teslamate/cars/1/wheel_type":
+        title = "<b>Wheel Type</b> : "
+    elif msg.topic == "teslamate/cars/1/spoiler_type":
+        title = "<b>Spoiler Type</b> : "
+    elif msg.topic == "teslamate/cars/1/geofence":
+        title = "<b>Geofence</b> : "
+    elif msg.topic == "teslamate/cars/1/latitude":
+        title = "<b>latitude</b> : "
+    elif msg.topic == "teslamate/cars/1/longitude":
+        title = "<b>Longitude</b> : "
+    elif msg.topic == "teslamate/cars/1/shift_state":
+        title = "<b>Shift State</b> : "
+    elif msg.topic == "teslamate/cars/1/power":
+        title = "<b>Power</b> : "
+    elif msg.topic == "teslamate/cars/1/speed":
+        title = "<b>Speed</b> : "
+    elif msg.topic == "teslamate/cars/1/heading":
+        title = "<b>Heading</b> : "
+    elif msg.topic == "teslamate/cars/1/elevation":
+        title = "<b>Elevation</b> : "
     elif msg.topic == "teslamate/cars/1/locked":
         title = "<b>Locked</b> : "
     elif msg.topic == "teslamate/cars/1/sentry_mode":
@@ -59,74 +94,46 @@ def on_message(client, userdata, msg):
         title = "<b>Frunk Open</b> : "
     elif msg.topic == "teslamate/cars/1/is_user_present":
         title = "<b>Is User Present</b> : "
-    elif msg.topic == "teslamate/cars/1/inside_temp":
-        title = "<b>Inside Temp</b> : "
-    elif msg.topic == "teslamate/cars/1/wheel_type":
-        title = "<b>Wheel Type</b> : "
-    elif msg.topic == "teslamate/cars/1/outside_temp":
-        title = "<b>Outside Temp</b> : "
-    elif msg.topic == "teslamate/cars/1/spoiler_type":
-        title = "<b>Spoiler Type</b> : "
-    elif msg.topic == "teslamate/cars/1/display_name":
-        title = "<b>Display Name</b> : "
-    elif msg.topic == "teslamate/cars/1/est_battery_range_km":
-        title = "<b>Est Battery Range Km</b> : "
-    elif msg.topic == "teslamate/cars/1/latitude":
-        title = "<b>latitude</b> : "
-    elif msg.topic == "teslamate/cars/1/trim_badging":
-        title = "<b>Trim Badging</b> : "
-    elif msg.topic == "teslamate/cars/1/usable_battery_level":
-        title = "<b>Usable Battery Level</b> : "
-    elif msg.topic == "teslamate/cars/1/longitude":
-        title = "<b>Longitude</b> : "
-    elif msg.topic == "teslamate/cars/1/exterior_color":
-        title = "<b>Exterior Color</b> : "
-    elif msg.topic == "teslamate/cars/1/healthy":
-        title = "<b>Healthy</b> : "
-    elif msg.topic == "teslamate/cars/1/battery_level":
-        title = "<b>Battery Level</b> : "
-    elif msg.topic == "teslamate/cars/1/odometer":
-        title = "<b>Odometer</b> : "
-    elif msg.topic == "teslamate/cars/1/since":
-        title = "<b>Since</b> : "
-    elif msg.topic == "teslamate/cars/1/ideal_battery_range_km":
-        title = "<b>Ideal Battery Range Km</b> : "
-    elif msg.topic == "teslamate/cars/1/version":
-        title = "<b>Version</b> : "
-    elif msg.topic == "teslamate/cars/1/model":
-        title = "<b>Model</b> : "
-    elif msg.topic == "teslamate/cars/1/rated_battery_range_km":
-        title = "<b>Rated Battery Range Km</b> : "
-    elif msg.topic == "teslamate/cars/1/charge_port_door_open":
-        title = "<b>Charge Port Door Open</b> : "
-    elif msg.topic == "teslamate/cars/1/time_to_full_charge":
-        title = "<b>Time To Full Charge</b> : "
-    elif msg.topic == "teslamate/cars/1/charger_power":
-        title = "<b>Charger Power</b> : "
-    elif msg.topic == "teslamate/cars/1/charger_actual_current":
-        title = "<b>Charger Actual Current</b> : "
-    elif msg.topic == "teslamate/cars/1/power":
-        title = "<b>Power</b> : "
-    elif msg.topic == "teslamate/cars/1/heading":
-        title = "<b>Heading</b> : "
-    elif msg.topic == "teslamate/cars/1/plugged_in":
-        title = "<b>Plugged In</b> : "
-    elif msg.topic == "teslamate/cars/1/charge_limit_soc":
-        title = "<b>Charge Limit</b> : "
-    elif msg.topic == "teslamate/cars/1/charger_voltage":
-        title = "<b>Charger Voltage</b> : "
     elif msg.topic == "teslamate/cars/1/is_climate_on":
         title = "<b>Is Climate On</b> : "
-    elif msg.topic == "teslamate/cars/1/charge_energy_added":
-        title = "<b>Charge Energy Added</b> : "
+    elif msg.topic == "teslamate/cars/1/inside_temp":
+        title = "<b>Inside Temp</b> : "
+    elif msg.topic == "teslamate/cars/1/outside_temp":
+        title = "<b>Outside Temp</b> : "
     elif msg.topic == "teslamate/cars/1/is_preconditioning":
         title = "<b>Is Preconditioning</b> : "
-    elif msg.topic == "teslamate/cars/1/shift_state":
-        title = "<b>Shift State</b> : "
-    elif msg.topic == "teslamate/cars/1/speed":
-        title = "<b>Speed</b> : "
-    elif msg.topic == "teslamate/cars/1/elevation":
-        title = "<b>Elevation</b> : "
+    elif msg.topic == "teslamate/cars/1/odometer":
+        title = "<b>Odometer</b> : "
+    elif msg.topic == "teslamate/cars/1/est_battery_range_km":
+        title = "<b>Est Battery Range Km</b> : "
+    elif msg.topic == "teslamate/cars/1/rated_battery_range_km":
+        title = "<b>Rated Battery Range Km</b> : "
+    elif msg.topic == "teslamate/cars/1/ideal_battery_range_km":
+        title = "<b>Ideal Battery Range Km</b> : "
+    elif msg.topic == "teslamate/cars/1/battery_level":
+        title = "<b>Battery Level</b> : "
+    elif msg.topic == "teslamate/cars/1/usable_battery_level":
+        title = "<b>Usable Battery Level</b> : "
+    elif msg.topic == "teslamate/cars/1/plugged_in":
+        title = "<b>Plugged In</b> : "
+    elif msg.topic == "teslamate/cars/1/charge_energy_added":
+        title = "<b>Charge Energy Added</b> : "
+    elif msg.topic == "teslamate/cars/1/charge_limit_soc":
+        title = "<b>Charge Limit</b> : "
+    elif msg.topic == "teslamate/cars/1/charge_port_door_open":
+        title = "<b>Charge Port Door Open</b> : "
+    elif msg.topic == "teslamate/cars/1/charger_actual_current":
+        title = "<b>Charger Actual Current</b> : "
+    elif msg.topic == "teslamate/cars/1/charger_phases":
+        title = "<b>Charger Phases</b> : "
+    elif msg.topic == "teslamate/cars/1/charger_power":
+        title = "<b>Charger Power</b> : "
+    elif msg.topic == "teslamate/cars/1/charger_voltage":
+        title = "<b>Charger Voltage</b> : "
+    elif msg.topic == "teslamate/cars/1/scheduled_charging_start_time":
+        title = "<b>Scheduled Charging Start Time</b> : "
+    elif msg.topic == "teslamate/cars/1/time_to_full_charge":
+        title = "<b>Time To Full Charge</b> : "
 
     bot.send_message(
         chat_id,
