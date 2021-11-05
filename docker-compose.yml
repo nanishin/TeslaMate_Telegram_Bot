@@ -3,7 +3,7 @@ version: "3"
 services:
   teslamatetelegrambot:
     image: teslamatetelegrambot:latest
-    restart: unless-stopped
+    restart: always
     environment:
       - MQTT_BROKER_HOST=YOUR_TESLAMATE_IP_ADDRESS
       - MQTT_BROKER_PORT=1883

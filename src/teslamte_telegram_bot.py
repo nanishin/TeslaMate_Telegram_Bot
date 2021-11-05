@@ -9,6 +9,12 @@ from telegram.parsemode import ParseMode
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, CallbackContext
 
+import teslapy
+
+# https://github.com/tdorssers/TeslaPy
+# cache.json can be generated after Browser SSO authentication via cli.py of TeslPy
+tesla_cache_file = '/app/src/cache.json'
+
 # initializing the bot with API_KEY and CHAT_ID
 if os.getenv('TELEGRAM_BOT_API_KEY') == None:
     print("Error: Please set the environment variable TELEGRAM_BOT_API_KEY and try again.")
@@ -208,6 +214,10 @@ def start(update: Update, context: CallbackContext) -> None:
         ],
         [
             InlineKeyboardButton("Battery", callback_data='battery'),
+            InlineKeyboardButton("Sentry", callback_data='sentry'),
+        ],
+        [
+            InlineKeyboardButton("Wake Up", callback_data='wake_up'),
             InlineKeyboardButton("What Else", callback_data='what_else'),
         ],
     ]
@@ -309,6 +319,39 @@ def button(update: Update, context: CallbackContext) -> None:
             battery_value = f"{battery_value}Time To Full Charge : {time_to_full_charge}\n"
 
         text = battery_value
+    elif query.data == "sentry":
+        if sentry_mode is not None:
+            if sentry_mode == "true":
+                set_sentry = "false"
+            else:
+                set_sentry = "true"
+
+            with teslapy.Tesla('YOUR_ACCOUNT_EMAIL', cache_file=tesla_cache_file) as tesla:
+                tesla.fetch_token()
+                vehicles = tesla.vehicle_list()
+                vehicles[0].sync_wake_up()
+                try:
+                    vehicles[0].command('SET_SENTRY_MODE', on = set_sentry)
+                    current_sentry_mode = vehicles[0].get_vehicle_data()['vehicle_state']['sentry_mode']
+                except teslapy.HTTPError as e:
+                    print(e)
+                sentry_value = f"Current Sentry Mode : {current_sentry_mode}\n"
+        text = sentry_value
+    elif query.data == "wake_up":
+        with teslapy.Tesla('YOUR_ACCOUNT_EMAIL', cache_file=tesla_cache_file) as tesla:
+            tesla.fetch_token()
+            vehicles = tesla.vehicle_list()
+            vehicles[0].sync_wake_up()
+            try:
+                current_state = vehicles[0].get_vehicle_data()['state']
+                state = current_state
+            except teslapy.HTTPError as e:
+                    print(e)
+
+        if state is not None:
+            state_value = f"Current State : {state}\n"
+
+        text = state_value
     elif query.data == "what_else":
         if display_name is not None:
             what_else_value = f"Display Name : {display_name}\n"
