@@ -26,11 +26,56 @@ if os.getenv('TELEGRAM_BOT_CHAT_ID') == None:
     exit(1)
 chat_id = os.getenv('TELEGRAM_BOT_CHAT_ID')
 
+# Initialization
+display_name = None
+state = None
+since = None
+healthy = None
+version = None
 charger_phases = None
 update_version = None
-scheduled_charging_start_time = None
+model = None
+trim_badging = None
+exterior_color = None
+wheel_type = None
+spoiler_type = None
 geofence = None
+latitude = None
+longitude = None
 shift_state = None
+power = None
+speed = None
+heading = None
+elevation = None
+locked = None
+sentry_mode = None
+windows_open = None
+doors_open = None
+trunk_open = None
+frunk_open = None
+is_user_present = None
+is_climate_on = None
+inside_temp = None
+outside_temp = None
+is_preconditioning = None
+odometer = None
+est_battery_range_km = None
+rated_battery_range_km = None
+ideal_battery_range_km = None
+battery_level = None
+usable_battery_level = None
+plugged_in = None
+charge_energy_added = None
+charge_limit_soc = None
+charge_port_door_open = None
+charger_actual_current = None
+charger_phases = None
+charger_power = None
+charger_voltage = None
+charge_current_request = None
+charge_current_request_max = None
+scheduled_charging_start_time = None
+time_to_full_charge = None
 
 # based on example from https://pypi.org/project/paho-mqtt/
 # The callback for when the client receives a CONNACK response from the server.
@@ -64,8 +109,8 @@ def on_message(client, userdata, msg):
     global update_version
     global model
     global trim_badging
-    global wheel_type
     global exterior_color
+    global wheel_type
     global spoiler_type
     global geofence
     global latitude
@@ -100,6 +145,8 @@ def on_message(client, userdata, msg):
     global charger_phases
     global charger_power
     global charger_voltage
+    global charge_current_request
+    global charge_current_request_max
     global scheduled_charging_start_time
     global time_to_full_charge
 
@@ -194,6 +241,10 @@ def on_message(client, userdata, msg):
         charger_power = value
     elif msg.topic == "teslamate/cars/1/charger_voltage":
         charger_voltage = value
+    elif msg.topic == "teslamate/cars/1/charge_current_request":
+        charge_current_request = value
+    elif msg.topic == "teslamate/cars/1/charge_current_request_max":
+        charge_current_request_max = value
     elif msg.topic == "teslamate/cars/1/scheduled_charging_start_time":
         scheduled_charging_start_time = value
     elif msg.topic == "teslamate/cars/1/time_to_full_charge":
@@ -243,8 +294,8 @@ def button(update: Update, context: CallbackContext) -> None:
     global update_version
     global model
     global trim_badging
-    global wheel_type
     global exterior_color
+    global wheel_type
     global spoiler_type
     global geofence
     global latitude
@@ -279,6 +330,8 @@ def button(update: Update, context: CallbackContext) -> None:
     global charger_phases
     global charger_power
     global charger_voltage
+    global charge_current_request
+    global charge_current_request_max
     global scheduled_charging_start_time
     global time_to_full_charge
 
@@ -313,6 +366,10 @@ def button(update: Update, context: CallbackContext) -> None:
             battery_value = f"{battery_value}Charger Power : {charger_power}\n"
         if charger_voltage is not None:
             battery_value = f"{battery_value}Charger Voltage : {charger_voltage}\n"
+        if charge_current_request is not None:
+            battery_value = f"{battery_value}Charge Current Request : {charge_current_request}\n"
+        if charge_current_request_max is not None:
+            battery_value = f"{battery_value}Charge Current Request Max : {charge_current_request_max}\n"
         if scheduled_charging_start_time is not None:
             battery_value = f"{battery_value}Scheduled Charging Start Time : {scheduled_charging_start_time}\n"
         if time_to_full_charge is not None:
